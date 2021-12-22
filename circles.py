@@ -53,7 +53,7 @@ CGA = [
 
 # 30 FOR I=0 TO 360 STEP 10
 # 40 LET R = I*(3.14/180)
-for r in (math.radians(j) for i in range(0,360,10)):
+for r in (math.radians(i) for i in range(0,360,10)):
     # A little explanation here.  'for' loops in Python loop through iterables.  Here I have nested iterables.
     # range() is itself an iterable, returning the next number in the list every time the loop repeats until
     # we're done.  The (f for f in x) is shorthand for an iterable; for every item in the range, I'm converting
