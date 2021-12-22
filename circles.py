@@ -70,12 +70,23 @@ for r in (math.radians(j) for i in range(0,360,10)):
     # 90 NEXT
     color = CGA[random.randint(1,15)]
     pygame.draw.circle(surf, color, (f, g), 50, width=1)
-    # PyGame's circle() routine is a little different.
+    # PyGame's circle() routine is a little different but similar.  the first parameter is the surface you're drawing
+    # to, the color is obvious from context, and (f, g) are the (x, y) coordinates. If width=0, the circle is filled;
+    # otherwise, width sets the number of pixels wide the line is.
 
+
+# the moment of truth.  smoothscale() scales the surface up to 960x720 and draws it on window.
 pygame.transform.smoothscale(surf,(960,720), window)
+# Now we're blitting surfac to the window...
 window.blit(surf, (960,720))
+# ...and page flipping to make it display...
 pygame.display.flip()
+# ...and running update() to refresh the window.
 pygame.display.update()
+
+# 100 COLOR 15
+# 110 WHILE INKEY$="": WEND
+# 120 SYSTEM : REM FOR COMPLETENESS SAKE
 
 done = False
 
@@ -85,5 +96,4 @@ while not done:
             pygame.quit()
             quit()
         if event.type == KEYDOWN:
-            if event.key == K_ESCAPE:
-                done = True
+            done = True
