@@ -18,10 +18,6 @@
 import pygame, random, pygame.gfxdraw, math
 from pygame.locals import *
 
-# 10 SCREEN 7
-# 15 CLS
-# 20 KEY OFF: REM TURNS OFF FUNCTION KEY DISPLAY IN EDITOR
-
 window = pygame.display.set_mode((960, 720))
 surf = pygame.Surface((320,240))
 
@@ -51,8 +47,6 @@ CGA = [
     "#FFFFFF"
 ] # 16 colors of the CGA palette.
 
-# 30 FOR I=0 TO 360 STEP 10
-# 40 LET R = I*(3.14/180)
 for r in (math.radians(i) for i in range(0,360,10)):
     # A little explanation here.  'for' loops in Python loop through iterables.  Here I have nested iterables.
     # range() is itself an iterable, returning the next number in the list every time the loop repeats until
@@ -60,33 +54,21 @@ for r in (math.radians(i) for i in range(0,360,10)):
     # the degree number in integer to radians.
     # In the original GW-BASIC, I'm just converting to radians by multiplying I by pi/180.
 
-    # 50 LET F = COS(R)*50+160
-    # 60 LET G = SIN(R)*50+100
     f = int(math.cos(r)*50)+160
     g = int(math.sin(r)*50)+120
 
-    # 70 COLOR INT(RND*14)+1
-    # 80 CIRCLE (F,G),50
-    # 90 NEXT
     color = CGA[random.randint(1,15)]
     pygame.draw.circle(surf, color, (f, g), 50, width=1)
+
     # PyGame's circle() routine is a little different but similar.  the first parameter is the surface you're drawing
     # to, the color is obvious from context, and (f, g) are the (x, y) coordinates. If width=0, the circle is filled;
     # otherwise, width sets the number of pixels wide the line is.
 
-
-# the moment of truth.  smoothscale() scales the surface up to 960x720 and draws it on window.
+# the moment of truth.  smoothscale() scales the surface up to 960x720 and draws it on window.  Then, blit the image to the window, page flip, and update.
 pygame.transform.smoothscale(surf,(960,720), window)
-# Now we're blitting surfac to the window...
 window.blit(surf, (960,720))
-# ...and page flipping to make it display...
 pygame.display.flip()
-# ...and running update() to refresh the window.
 pygame.display.update()
-
-# 100 COLOR 15
-# 110 WHILE INKEY$="": WEND
-# 120 SYSTEM : REM FOR COMPLETENESS SAKE
 
 done = False
 
