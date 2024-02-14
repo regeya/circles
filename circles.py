@@ -15,7 +15,8 @@
 # 110 WHILE INKEY$="": WEND
 # 120 SYSTEM : REM FOR COMPLETENESS SAKE
 
-import pygame, moderngl, struct, random, pygame.gfxdraw, math
+import pygame, moderngl, moderngl_window, struct, random, pygame.gfxdraw, math
+from moderngl_window import geometry
 from pygame.locals import *
 
 # I'm creating a new window that's 3x the size I want, or 960x720.  Then I'm creating a surface that's set
