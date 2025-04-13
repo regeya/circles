@@ -10,6 +10,5 @@ At one point I had this working with a CRT shader with ModernGL, but I felt like
 code was more lines of code than the actual cirle-drawing.
 
 The GW-BASIC version can be run in DOSBox in GW-BASIC, or in PC-BASIC, a fantastic
-interpreter written in Python 3.  The Python version requires PyGame.
+interpreter written in Python 3.  The Python version requires PyGame-CE.
 
-The bulk of the Python code comes from https://blubberquark.tumblr.com/post/185013752945/using-moderngl-for-post-processing-shaders-with
