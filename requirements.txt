@@ -1,13 +1,3 @@
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-pygame
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 pygame-ce
 moderngl
 moderngl-window
->>>>>>> Stashed changes
