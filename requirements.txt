@@ -1,6 +1,9 @@
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 pygame
 =======
+=======
+>>>>>>> Stashed changes
 pygame-ce
 moderngl
 moderngl-window
