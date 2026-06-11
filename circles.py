@@ -15,18 +15,22 @@
 # 110 WHILE INKEY$="": WEND
 # 120 SYSTEM : REM FOR COMPLETENESS SAKE
 
-import pygame, random, pygame.gfxdraw, math
-from pygame.locals import *
+import pygame as pg
+import moderngl
+import crt
+import math, random
 
-window = pygame.display.set_mode((960, 720))
-surf = pygame.Surface((320,240))
+view_width, view_height = 320, 240
+screen_width, screen_height = 960, 720
 
-# I'm creating a new window that's 3x the size I want, or 960x720.  Then I'm creating a surface that's set
-# to be 320x240, or perfectly 4:3 ratio.  This is a little different from the Tandy/PCjr/EGA 320x200x16 color mode.
-# At the end I'll use a smooth scaling routine to draw the 320x240 image at 960x720.
+pg.init()
+screen = pg.display.set_mode((screen_width, screen_height), pg.DOUBLEBUF | pg.OPENGL)
 
-# The following was cribbed from Wikipedia.  CGA's 16 colors are 4-bit, with an red, green, and blue bit, and an
-# intensity bit.  At the hardware level, though, some bit combinations are altered to change the color palette.
+surf = pg.Surface((view_width, view_height), flags=pg.SRCALPHA)
+
+crt_processor = crt.CRTProcessor(
+    (view_width, view_height), (screen_width, screen_height)
+)
 
 CGA = [
     "#000000",
@@ -44,38 +48,38 @@ CGA = [
     "#FF5555",
     "#FF55FF",
     "#FFFF55",
-    "#FFFFFF"
-] # 16 colors of the CGA palette.
+    "#FFFFFF",
+]
 
-for r in (math.radians(i) for i in range(0,360,10)):
-    # A little explanation here.  'for' loops in Python loop through iterables.  Here I have nested iterables.
-    # range() is itself an iterable, returning the next number in the list every time the loop repeats until
-    # we're done.  The (f for f in x) is shorthand for an iterable; for every item in the range, I'm converting
-    # the degree number in integer to radians.
-    # In the original GW-BASIC, I'm just converting to radians by multiplying I by pi/180.
+circle_positions = []
 
-    f = int(math.cos(r)*50)+160
-    g = int(math.sin(r)*50)+120
+circle_colors = [CGA[random.randint(1, 15)] for _ in circle_positions]
 
-    color = CGA[random.randint(1,15)]
-    pygame.draw.circle(surf, color, (f, g), 50, width=1)
-
-    # PyGame's circle() routine is a little different but similar.  the first parameter is the surface you're drawing
-    # to, the color is obvious from context, and (f, g) are the (x, y) coordinates. If width=0, the circle is filled;
-    # otherwise, width sets the number of pixels wide the line is.
-
-# the moment of truth.  smoothscale() scales the surface up to 960x720 and draws it on window.  Then, blit the image to the window, page flip, and update.
-pygame.transform.smoothscale(surf,(960,720), window)
-window.blit(surf, (960,720))
-pygame.display.flip()
-pygame.display.update()
-
+clock = pg.time.Clock()
 done = False
+redraw = True
 
 while not done:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            quit()
-        if event.type == KEYDOWN:
+    for event in pg.event.get():
+        if event.type == pg.QUIT:
             done = True
+        elif event.type == pg.KEYDOWN:
+            redraw = True
+
+    surf.fill((0, 0, 0, 255))
+    if redraw:
+        for r in (math.radians(i) for i in range(0, 360, 10)):
+            f = int(math.cos(r) * 50) + 160
+            g = int(math.sin(r) * 50) + 120
+            c = CGA[random.randint(1, 15)]
+            pg.draw.circle(surf, c, (f, g), 50, width=1)
+
+        crt_processor.ctx.clear(0, 0, 0)
+
+        crt_processor.render(surf)
+
+        pg.display.flip()
+        clock.tick(60)
+        redraw = False
+
+pg.quit()
